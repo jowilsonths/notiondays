@@ -12,33 +12,27 @@
     <table>
       <tr>
         <td></td>
+        <td><b>Day 1</b></td>
+        <td><b>Day 2</b></td>
+        <td><b>Day 3</b></td>
+        <td><b>Day 4</b></td>
+        <td><b>Day 5</b></td>
+      </tr>
+      <tr>
         <td><b>High</b></td>
+        <td id="day1-high"></td>
+        <td id="day2-high"></td>
+        <td id="day3-high"></td>
+        <td id="day4-high"></td>
+        <td id="day5-high"></td>
+      </tr>
+      <tr>
         <td><b>Low</b></td>
-      </tr>
-      <tr id="day1">
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr id="day2">
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr id="day3">
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr id="day4">
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr id="day5">
-        <td></td>
-        <td></td>
-        <td></td>
+        <td id="day1-low"></td>
+        <td id="day2-low"></td>
+        <td id="day3-low"></td>
+        <td id="day4-low"></td>
+        <td id="day5-low"></td>
       </tr>
     </table>
   </div>
@@ -55,16 +49,13 @@
       const forecast = data.forecast.forecastday;
 
       for (let i = 0; i < forecast.length; i++) {
-        const day = forecast[i].date;
+        const day = new Date(forecast[i].date).toLocaleDateString('en-US', {weekday: 'short'});
         const high = forecast[i].day.maxtemp_f;
         const low = forecast[i].day.mintemp_f;
-        const icon = forecast[i].day.condition.icon;
 
-        document.getElementById(`day${i+1}`).innerHTML = `
-          <td>${day}</td>
-          <td><img src="https:${icon}" alt="Weather icon" style="height: 50px;"><br>${high}&deg; F</td>
-          <td>${low}&deg; F</td>
-        `;
+        document.getElementById(`day${i+1}-high`).innerHTML = `${high}&deg; F`;
+        document.getElementById(`day${i+1}-low`).innerHTML = `${low}&deg; F`;
+        document.getElementsByTagName('b')[i+1].innerHTML = `Day ${i+1}: ${day}`;
       }
     })
     .catch(error => {
