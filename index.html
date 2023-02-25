@@ -61,26 +61,22 @@
   const LOCATION = 'Charlotte,NC';
   const ENDPOINT = `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${LOCATION}&days=5&aqi=no&alerts=no`;
 
-   fetch(ENDPOINT)
+  fetch(ENDPOINT)
     .then(response => response.json())
     .then(data => {
       const forecast = data.forecast.forecastday;
 
-      document.getElementById('icon1').src = `https:${forecast[0].day.condition.icon}`;
-      document.getElementById('icon2').src = `https:${forecast[1].day.condition.icon}`;
-      document.getElementById('icon3').src = `https:${forecast[2].day.condition.icon}`;
-      document.getElementById('icon4').src = `https:${forecast[3].day.condition.icon}`;
-      document.getElementById('icon5').src = `https:${forecast[4].day.condition.icon}`;
+      for (let i = 0; i < forecast.length; i++) {
+        const day = forecast[i].date;
+        const high = forecast[i].day.maxtemp_f;
+        const low = forecast[i].day.mintemp_f;
+        const icon = forecast[i].day.condition.icon;
 
-      document.getElementById('high1').innerHTML = forecast[0].day.maxtemp_f;
-      document.getElementById('high2').innerHTML = forecast[1].day.maxtemp_f;
-      document.getElementById('high3').innerHTML = forecast[2].day.maxtemp_f;
-      document.getElementById('high4').innerHTML = forecast[3].day.maxtemp_f;
-      document.getElementById('high5').innerHTML = forecast[4].day.maxtemp_f;
-
-      document.getElementById('low1').innerHTML = forecast[0].day.mintemp_f;
-      document.getElementById('low2').innerHTML = forecast[1].day.mintemp_f;
-      document.getElementById('low3').innerHTML = forecast[2].day.mintemp_f;
+        document.getElementById(`day${i+1}`).innerHTML = `
+          <td>${day}</td>
+          <td><img src="https:${icon}" alt="Weather icon" style="height: 50px;"><br>${high}&deg; F</td>
+          <td>${low}&deg; F</td>
+        `;
       }
     })
     .catch(error => {
