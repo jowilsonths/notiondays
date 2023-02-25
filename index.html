@@ -1,0 +1,72 @@
+<style>
+  h1, h3, h5 {
+    margin: 0; 
+    padding: 0;
+    line-height: 1; 
+  }
+</style>
+
+<div style="text-align: center;" line-height: -4;" class="no-br-space">
+  <h3>Five-Day Forecast</h3>
+  <div>
+    <table>
+      <tr>
+        <td></td>
+        <td><b>High</b></td>
+        <td><b>Low</b></td>
+      </tr>
+      <tr id="day1">
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr id="day2">
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr id="day3">
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr id="day4">
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr id="day5">
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<script>
+  const API_KEY = '6fd10c3a1abf4fecaa6125207231102';
+  const LOCATION = 'Charlotte,NC';
+  const ENDPOINT = `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${LOCATION}&days=5&aqi=no&alerts=no`;
+
+  fetch(ENDPOINT)
+    .then(response => response.json())
+    .then(data => {
+      const forecast = data.forecast.forecastday;
+
+      for (let i = 0; i < forecast.length; i++) {
+        const day = forecast[i].date;
+        const high = forecast[i].day.maxtemp_f;
+        const low = forecast[i].day.mintemp_f;
+
+        document.getElementById(`day${i+1}`).innerHTML = `
+          <td>${day}</td>
+          <td>${high}&deg; F</td>
+          <td>${low}&deg; F</td>
+        `;
+      }
+    })
+    .catch(error => {
+      console.error(error);
+    });
+</script>
