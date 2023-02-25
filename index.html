@@ -61,25 +61,26 @@
   const LOCATION = 'Charlotte,NC';
   const ENDPOINT = `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${LOCATION}&days=5&aqi=no&alerts=no`;
 
-  fetch(ENDPOINT)
+   fetch(ENDPOINT)
     .then(response => response.json())
     .then(data => {
       const forecast = data.forecast.forecastday;
 
-      for (let i = 0; i < forecast.length; i++) {
-        const date = forecast[i].date;
-        const day = date.slice(5, 7) + "/" + date.slice(8, 10);
-        const icon = forecast[i].day.condition.icon;
-        const high = forecast[i].day.maxtemp_f;
-        const low = forecast[i].day.mintemp_f;
+      document.getElementById('icon1').src = `https:${forecast[0].day.condition.icon}`;
+      document.getElementById('icon2').src = `https:${forecast[1].day.condition.icon}`;
+      document.getElementById('icon3').src = `https:${forecast[2].day.condition.icon}`;
+      document.getElementById('icon4').src = `https:${forecast[3].day.condition.icon}`;
+      document.getElementById('icon5').src = `https:${forecast[4].day.condition.icon}`;
 
-        document.getElementById(`icon${i+1}`).innerHTML = `<img src="https:${icon}">`;
-        document.getElementById(`high${i+1}`).innerHTML = `${high}&deg; F`;
-        document.getElementById(`low${i+1}`).innerHTML = `${low}&deg; F`;
-        document.getElementById(`icon${i+1}`).setAttribute("title", `${forecast[i].day.condition.text}`);
-        document.getElementById(`icon${i+1}`).setAttribute("alt", `${forecast[i].day.condition.text}`);
-        document.getElementById(`icon${i+1}`).setAttribute("aria-label", `${forecast[i].day.condition.text}`);
-        document.getElementsByTagName('th')[i+1].innerHTML = `${day}`;
+      document.getElementById('high1').innerHTML = forecast[0].day.maxtemp_f;
+      document.getElementById('high2').innerHTML = forecast[1].day.maxtemp_f;
+      document.getElementById('high3').innerHTML = forecast[2].day.maxtemp_f;
+      document.getElementById('high4').innerHTML = forecast[3].day.maxtemp_f;
+      document.getElementById('high5').innerHTML = forecast[4].day.maxtemp_f;
+
+      document.getElementById('low1').innerHTML = forecast[0].day.mintemp_f;
+      document.getElementById('low2').innerHTML = forecast[1].day.mintemp_f;
+      document.getElementById('low3').innerHTML = forecast[2].day.mintemp_f;
       }
     })
     .catch(error => {
