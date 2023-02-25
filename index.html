@@ -64,7 +64,9 @@
   fetch(ENDPOINT)
     .then(response => response.json())
     .then(data => {
-      for (let i = 0; i < 5; i++) {
+      const forecast = data.forecast.forecastday;
+
+      for (let i = 0; i < forecast.length; i++) {
         const date = forecast[i].date;
         const day = date.slice(5, 7) + "/" + date.slice(8, 10);
         const icon = forecast[i].day.condition.icon;
