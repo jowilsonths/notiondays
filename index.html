@@ -1,64 +1,103 @@
 <style>
   h1, h3, h5 {
-    margin: 0; 
+    margin: 0;
     padding: 0;
-    line-height: 1; 
+    line-height: 1;
+  }
+  table {
+    margin: 0 auto;
+    border-collapse: collapse;
+  }
+  th, td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid black;
+  }
+  th {
+    font-weight: bold;
   }
 </style>
 
-<div style="text-align: center;" line-height: -4;" class="no-br-space">
-  <h3>Five-Day Forecast</h3>
+<div style="text-align: center;">
+  <h3>Current Weather</h3>
   <div>
-    <table>
-      <tr>
-        <td></td>
-        <td><b>Day 1</b></td>
-        <td><b>Day 2</b></td>
-        <td><b>Day 3</b></td>
-        <td><b>Day 4</b></td>
-        <td><b>Day 5</b></td>
-      </tr>
-      <tr>
-        <td><b>High</b></td>
-        <td id="day1-high"></td>
-        <td id="day2-high"></td>
-        <td id="day3-high"></td>
-        <td id="day4-high"></td>
-        <td id="day5-high"></td>
-      </tr>
-      <tr>
-        <td><b>Low</b></td>
-        <td id="day1-low"></td>
-        <td id="day2-low"></td>
-        <td id="day3-low"></td>
-        <td id="day4-low"></td>
-        <td id="day5-low"></td>
-      </tr>
-    </table>
+    <img id="weather-icon" alt="Weather icon">
+    <h1><span id="temp"></span>&deg; F</h1>
+    <span id="description"></span>
   </div>
+</div>
+
+<div style="text-align: center;">
+  <h3>5 Day Forecast</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Day</th>
+        <th>Weather</th>
+        <th>High</th>
+        <th>Low</th>
+      </tr>
+    </thead>
+    <tbody id="forecast-table-body">
+    </tbody>
+  </table>
 </div>
 
 <script>
   const API_KEY = '6fd10c3a1abf4fecaa6125207231102';
   const LOCATION = 'Charlotte,NC';
-  const ENDPOINT = `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${LOCATION}&days=5&aqi=no&alerts=no`;
+  const CURRENT_WEATHER_ENDPOINT = `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${LOCATION}&aqi=no`;
+  const FORECAST_ENDPOINT = `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${LOCATION}&days=5&aqi=no&alerts=no`;
 
-  fetch(ENDPOINT)
+  const dayOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+  // Fetch current weather data
+  fetch(CURRENT_WEATHER_ENDPOINT)
     .then(response => response.json())
     .then(data => {
-      const forecast = data.forecast.forecastday;
+      const temp = data.current.temp_f;
+      const description = data.current.condition.text;
+      const icon = data.current.condition.icon;
 
-      for (let i = 0; i < forecast.length; i++) {
-        const day = new Date(forecast[i].date).toLocaleDateString('en-US', {weekday: 'short'});
-        const high = forecast[i].day.maxtemp_f;
-        const low = forecast[i].day.mintemp_f;
-
-        document.getElementById(`day${i+1}-high`).innerHTML = `${high}&deg; F`;
-        document.getElementById(`day${i+1}-low`).innerHTML = `${low}&deg; F`;
-        document.getElementsByTagName('b')[i+1].innerHTML = `Day ${i+1}: ${day}`;
-      }
+      document.getElementById('temp').innerHTML = temp;
+      document.getElementById('description').innerHTML = description;
+      document.getElementById('weather-icon').src = `https:${icon}`;
     })
     .catch(error => {
       console.error(error);
     });
-</script>
+
+  // Fetch forecast data
+  fetch(FORECAST_ENDPOINT)
+    .then(response => response.json())
+    .then(data => {
+      const forecast = data.forecast.forecastday;
+
+      for (let i = 0; i < 5; i++) {
+        const date = new Date(forecast[i].date);
+        const dayName = dayOfWeek[date.getDay()];
+        const icon = forecast[i].day.condition.icon;
+        const high = forecast[i].day.maxtemp_f;
+        const low = forecast[i].day.mintemp_f;
+
+        const row = document.createElement('tr');
+
+        const dayCell = document.createElement('td');
+        dayCell.innerHTML = dayName;
+        row.appendChild(dayCell);
+
+        const iconCell = document.createElement('td');
+        const iconImg = document.createElement('img');
+        iconImg.src = `https:${icon}`;
+        iconCell.appendChild(iconImg);
+        row.appendChild(iconCell);
+
+        const highCell = document.createElement('td');
+        highCell.innerHTML = high + '&deg; F';
+        row.appendChild(highCell);
+
+        const lowCell = document.createElement('td');
+        lowCell.innerHTML = low + '&deg; F';
+        row.appendChild(lowCell);
+
+        document.getElementById('forecast
