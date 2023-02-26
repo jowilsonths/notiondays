@@ -24,8 +24,6 @@
       <th>Day 1</th>
       <th>Day 2</th>
       <th>Day 3</th>
-      <th>Day 4</th>
-      <th>Day 5</th>
     </tr>
   </thead>
   <tbody>
@@ -34,24 +32,18 @@
       <td id="icon1"></td>
       <td id="icon2"></td>
       <td id="icon3"></td>
-      <td id="icon4"></td>
-      <td id="icon5"></td>
     </tr>
     <tr>
       <td><b>High</b></td>
       <td id="high1"></td>
       <td id="high2"></td>
       <td id="high3"></td>
-      <td id="high4"></td>
-      <td id="high5"></td>
     </tr>
     <tr>
       <td><b>Low</b></td>
       <td id="low1"></td>
       <td id="low2"></td>
       <td id="low3"></td>
-      <td id="low4"></td>
-      <td id="low5"></td>
     </tr>
   </tbody>
 </table>
@@ -114,8 +106,6 @@
       <th>Day 1</th>
       <th>Day 2</th>
       <th>Day 3</th>
-      <th>Day 4</th>
-      <th>Day 5</th>
     </tr>
   </thead>
   <tbody>
@@ -124,24 +114,18 @@
       <td id="icon1"></td>
       <td id="icon2"></td>
       <td id="icon3"></td>
-      <td id="icon4"></td>
-      <td id="icon5"></td>
     </tr>
     <tr>
       <td><b>High</b></td>
       <td id="high1"></td>
       <td id="high2"></td>
       <td id="high3"></td>
-      <td id="high4"></td>
-      <td id="high5"></td>
     </tr>
     <tr>
       <td><b>Low</b></td>
       <td id="low1"></td>
       <td id="low2"></td>
       <td id="low3"></td>
-      <td id="low4"></td>
-      <td id="low5"></td>
     </tr>
   </tbody>
 </table>
@@ -158,7 +142,7 @@
 
       for (let i = 0; i < forecast.length; i++) {
         const date = forecast[i].date;
-        const day = date.slice(5, 7) + "/" + date.slice(8, 10);
+        const dayOfWeek = new Date(date).toLocaleDateString('en-US', { weekday: 'short' });
         const icon = forecast[i].day.condition.icon;
         const high = Math.round(forecast[i].day.maxtemp_f);
         const low = Math.round(forecast[i].day.mintemp_f);
@@ -169,12 +153,13 @@
         document.getElementById(`icon${i+1}`).setAttribute("title", `${forecast[i].day.condition.text}`);
         document.getElementById(`icon${i+1}`).setAttribute("alt", `${forecast[i].day.condition.text}`);
         document.getElementById(`icon${i+1}`).setAttribute("aria-label", `${forecast[i].day.condition.text}`);
-        document.getElementsByTagName('th')[i+1].innerHTML = `${day}`;
+        document.getElementsByTagName('th')[i+1].innerHTML = `${dayOfWeek}`;
       }
     })
     .catch(error => {
       console.error(error);
     });
 </script>
+
 
 
