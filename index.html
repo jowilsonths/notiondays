@@ -74,8 +74,8 @@
         const low = Math.round(forecast[i].day.mintemp_f);
 
         document.getElementById(`icon${i+1}`).innerHTML = `<img src="https:${icon}">`;
-        document.getElementById(`high${i+1}`).innerHTML = `${high}&deg; F`;
-        document.getElementById(`low${i+1}`).innerHTML = `${low}&deg; F`;
+        document.getElementById(`high${i+1}`).innerHTML = `${high}`;
+        document.getElementById(`low${i+1}`).innerHTML = `${low}`;
         document.getElementById(`icon${i+1}`).setAttribute("title", `${forecast[i].day.condition.text}`);
         document.getElementById(`icon${i+1}`).setAttribute("alt", `${forecast[i].day.condition.text}`);
         document.getElementById(`icon${i+1}`).setAttribute("aria-label", `${forecast[i].day.condition.text}`);
@@ -86,4 +86,3 @@
       console.error(error);
     });
 </script>
-
