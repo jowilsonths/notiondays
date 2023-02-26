@@ -86,3 +86,34 @@
       console.error(error);
     });
 </script>
+
+<script>
+  const API_KEY = '6fd10c3a1abf4fecaa6125207231102';
+  const LOCATION = 'Charlotte,NC';
+  const ENDPOINT = `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${LOCATION}&days=5&aqi=no&alerts=no`;
+
+  fetch(ENDPOINT)
+    .then(response => response.json())
+    .then(data => {
+      const forecast = data.forecast.forecastday;
+
+      for (let i = 0; i < forecast.length; i++) {
+        const date = forecast[i].date;
+        const day = date.slice(5, 7) + "/" + date.slice(8, 10);
+        const icon = forecast[i].day.condition.icon;
+        const high = Math.round(forecast[i].day.maxtemp_f);
+        const low = Math.round(forecast[i].day.mintemp_f);
+
+        document.getElementById(`icon${i+1}`).innerHTML = `<img src="https:${icon}">`;
+        document.getElementById(`high${i+1}`).innerHTML = `${high}&deg;`;
+        document.getElementById(`low${i+1}`).innerHTML = `${low}&deg;`;
+        document.getElementById(`icon${i+1}`).setAttribute("title", `${forecast[i].day.condition.text}`);
+        document.getElementById(`icon${i+1}`).setAttribute("alt", `${forecast[i].day.condition.text}`);
+        document.getElementById(`icon${i+1}`).setAttribute("aria-label", `${forecast[i].day.condition.text}`);
+        document.getElementsByTagName('th')[i+1].innerHTML = `${day}`;
+      }
+    })
+    .catch(error => {
+      console.error(error);
+    });
+</script>
