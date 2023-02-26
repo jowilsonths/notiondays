@@ -70,8 +70,8 @@
         const date = forecast[i].date;
         const day = date.slice(5, 7) + "/" + date.slice(8, 10);
         const icon = forecast[i].day.condition.icon;
-        const high = forecast[i].day.maxtemp_f;
-        const low = forecast[i].day.mintemp_f;
+        const high = Math.round(forecast[i].day.maxtemp_f);
+        const low = Math.round(forecast[i].day.mintemp_f);
 
         document.getElementById(`icon${i+1}`).innerHTML = `<img src="https:${icon}">`;
         document.getElementById(`high${i+1}`).innerHTML = `${high}&deg; F`;
@@ -86,3 +86,4 @@
       console.error(error);
     });
 </script>
+
